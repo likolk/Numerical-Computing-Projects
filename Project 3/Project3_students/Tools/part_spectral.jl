@@ -14,11 +14,11 @@ julia> spectral_part(A)
 """
 
 # arpack library
-using Arpack
-using LinearAlgebra
-import Pkg;
-Pkg.add("Arpack");
-Pkg.add("LinearAlgebra");
+# using Arpack
+# using LinearAlgebra
+# import Pkg;
+# Pkg.add("Arpack");
+# Pkg.add("LinearAlgebra");
 
 function spectral_part(A)
     n = size(A)[1]
@@ -41,8 +41,8 @@ function spectral_part(A)
     # (eigenvalues, eigenvectors). set maximum iterations to 
     # 100000 and tolerance to 1e-6
     
-        # (λ, v) = eigs(L, nev=2, which=:SM, maxiter=100000, tol=1e-6)
-        eig_pairs, v = eigs(L, nev = 2, which=:SM, maxiter=1000000, tol=1e-6)
+    # (λ, v) = eigs(L, nev=2, which=:SM, maxiter=100000, tol=1e-6)
+    eig_pairs, v = eigs(L, nev = 2, which=:SM)
 
 
     # get the eigenvectors

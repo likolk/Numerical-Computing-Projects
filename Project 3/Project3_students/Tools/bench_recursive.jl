@@ -45,42 +45,59 @@ function benchmark_recursive()
         #   1.  Spectral
 
         # use rec_bisection
-        pAll[i, 2] = rec_bisection("spectral_part", 3, A)
-        pAll[i, 3] = rec_bisection("spectral_part", 4, A)
+        spectral_part_8 = rec_bisection("spectral_part", 3, A)
+        spectral_part_16 = rec_bisection("spectral_part", 4, A)
+        pAll[i, 2] = count_edge_cut(A, spectral_part_8);
+        pAll[i, 3] = count_edge_cut(A, spectral_part_16);
+        # was:
+        # pAll[i, 2] = rec_bisection("spectral_part", 3, A)
+        # pAll[i, 3] = rec_bisection("spectral_part", 4, A)
 
         #   2.  METIS
         alg = :RECURSIVE
-        pAll[i, 4] = metis_part(A, 8, alg)
-        pAll[i, 5] = metis_part(A, 16, alg)
+        metis_part_8 = metis_part(A, 8, alg) # 8 and 16 respectively as per Malik's Slack recommendation 
+        metis_part_16 = metis_part(A, 16, alg)
+        pAll[i, 4] = count_edge_cut(A, metis_part_8);
+        pAll[i, 5] = count_edge_cut(A, metis_part_16);
+        # was:
+        # pAll[i, 4] = metis_part(A, 8, alg)
+        # pAll[i, 5] = metis_part(A, 16, alg)
 
 
-
-        
         #   3.  Coordinate
         
-        pAll[i, 6] = rec_bisection("coordinate_part", 3, A, coords)
-        pAll[i, 7] = rec_bisection("coordinate_part", 4, A, coords)
-        # pAll[i, 7] = rec_bisection("coordinate_part", 4, A)
+        coordinate_part_8 = rec_bisection("coordinate_part", 3, A, coords)
+        coordinate_part_16 = rec_bisection("coordinate_part", 4, A, coords)
+        pAll[i, 6] = count_edge_cut(A, coordinate_part_8);
+        pAll[i, 7] = count_edge_cut(A, coordinate_part_16);
+        # was:
+        # pAll[i, 6] = rec_bisection("coordinate_part", 3, A, coords)
+        # pAll[i, 7] = rec_bisection("coordinate_part", 4, A, coords)
         
         #   4.  Inertial
-        pAll[i, 8] = rec_bisection("inertial_part", 3, A, coords)
-        pAll[i, 9] = rec_bisection("inertial_part", 4, A, coords)
-
-
+        inertial_part_8 = rec_bisection("inertial_part", 3, A, coords)
+        inertial_part_16 = rec_bisection("inertial_part", 4, A, coords)
+        pAll[i, 8] = count_edge_cut(A, inertial_part_8);
+        pAll[i, 9] = count_edge_cut(A, inertial_part_16);
+        # was:
+        # pAll[i, 8] = rec_bisection("inertial_part", 3, A, coords)
+        # pAll[i, 9] = rec_bisection("inertial_part", 4, A, coords)
 
         #   5.  Crack p = 16
         # visualize the results for p = 16 for the case ”crack”
         if mesh == "crack"
-            # draw graph 
-            draw_graph(A, coords, pAll[i, 9])
+            #draw graph 
+            g = Graph(A)
+            #draw graph with 16 partitions
+            draw_graph(g, coords, spectral_part_16)
         end
         
     end
 
     #   Print result table
-    # header =(hcat(["Mesh"], algs), ["" "8 parts" "16 parts" "8 parts" "16 parts" "8 parts" "16 parts" "8 parts" "16 parts"])
+    header =(hcat(["Mesh"], algs), ["" "8 parts" "16 parts" "8 parts" "16 parts" "8 parts" "16 parts" "8 parts" "16 parts"])
     # # print(header[2])
-    # pretty_table(pAll; header = header, crop = :none, header_crayon = crayon"bold cyan")
+    pretty_table(pAll; header = header, crop = :none, header_crayon = crayon"bold cyan")
     # # println(typeof(a))
     # return pAll
 end

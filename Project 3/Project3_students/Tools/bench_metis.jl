@@ -67,7 +67,7 @@ function benchmark_metis()
 
 
         #   3.  Visualize the results for 16 and 32 partitions.
-        # toggle commenting to visualize.
+        # toggle commenting to visualize. please uncomment only one command at a time.
         # draw_graph(file_commanche_dual, c, pMetis1);
         # draw_graph(file_commanche_dual, c, pMetis2);
         # draw_graph(file_commanche_dual, c, pMetis3);
