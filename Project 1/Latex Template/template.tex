@@ -1,0 +1,70 @@
+\documentclass[unicode,11pt,a4paper,oneside,numbers=endperiod,openany]{scrartcl}
+
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2212}{-}
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\input{assignment.sty}
+\begin{document}
+
+
+\setassignment
+\setduedate{Wednesday, 12 October 2022, 23:59 AM}
+
+\serieheader{Numerical Computing}{2022}{Student: Kelvin Likollari}{Discussed with: FULL NAME}{Solution for Project 1}{}
+\newline
+
+\assignmentpolicy
+The purpose of this assignment\footnote{This document is originally based on a SIAM book chapter from \textsl{Numerical Computing with Matlab} from  Clever B. Moler.} is to learn the importance of numerical linear algebra algorithms to solve fundamental  linear algebra problems that occur in search engines.
+
+
+
+\section*{PageRank Algorithm }
+
+\subsection{Theory [20 points]}
+
+\begin{enumerate}
+\item[(a)] \textbf{What are an eigenvector, an eigenvalue and an eigenbasis?}
+\par {An eigenvector is a non-zero vector that is mapped by a given linear transformation of a vector space onto a vector that is the product of a scalar multiplied by the starting vector (Ax = \lambda$x)$
+
+\par {An eigenvalue on the other hand, can be found in the previously mentioned equation Ax =\lambda$x and can be considered as a special set of scalars (i.e. \lambda}$) by which the eigenvector is multiplied with. In essence, those scalars are often combined with a linear set of equations (i.e. Ax = \lambda$x).$
+
+\par {An eigenbasis is a basis for a vector space ($\mathbb{R}^{n}$) consisting entirely of eigenvectors.}$
+
+
+
+\item[(b)] \textbf{What assumptions should be made to guarantee convergence of the power method?}
+\par Given a matrix A, to guarantee the convergence of the power method, it is sufficient to show that matrix A is diagonalizable, i.e. if there exists an invertible matrix B (invertible means if the product of the matrix B and its inverse \inv B^{-1}$ yield the identity matrix), and a diagonal matrix C (diagonal means that the entries outside the main diagonal are 0), such that $\inv B^{-1}\cdot{A}\cdot{B}=C}$.
+
+By definition, if A is an n x n diagonizable matrix with a dominant eigenvalue, that is, an eigenvalue strictly greater than the absolute values of all the other eigenvalues, then there exists a non-zero vector, say  $x_{0}$ such that the sequence of vectors given by {${A_{x_0}}, A$^2$_{x_0}, A$^3$_{x_0},..., A$^k$_{x_0},...}$ approaches a multiple of the dominant eigenvector of A.
+$
+
+\item[(c)] \textbf{What is the shift and invert approach?}
+\par We know that the Power Method is used to find the eigenvalue with the biggest magnitude. But there are cases when we would like to find a particular eigenvalue with some magnitude, not necessarily the smallest or biggest one. Here comes handy the Shift and Invert approach of the Power Method.
+
+Essentially, provided a matrix A, if its eigenvalues are \lambda_{j}$, the eigenvalues of A - \alpha$\cdot$I are going to be \lambda_{j} - \alpha$I, and respectively the eigenvalues of matrix B = (A - \alpha$\cdot$I){^{-1}}$ are:
+\mu_{j}$ = \frac{1}{\lambda$_{j}}$} TODO: Finish the rest
+
+\item[(d)] \textbf{What is the difference in cost of a single iteration of the power method, compared to the inverse iteration?}
+\par Power Method in general is pretty straightforward and simple, but the speed it may converge might not be so efficient. The power method is used by Google to calculate the PageRank of their documents displayed by the search engine.
+
+On the other hand, the inverse power method is used to find an approximate eigenvector when we are already given an approximation to a matching eigenvalue. The inverse iteration algorithm particularly says
+
+\item[(e)] \textbf{What is a Rayleigh quotient and how can it be used for eigenvalue computations?}
+\end{enumerate}
+\par The Rayleigh quotient is used to approximately compute the dominant eigenvalue.
+
+\subsection{Other webgraphs [10 points]}
+
+\subsection{Connectivity matrix and subcliques [5 points]}
+
+\subsection{Connectivity matrix and disjoint subgraphs [10 points]}
+
+\subsection{PageRanks by solving a sparse linear system [40 points]}
+
+\subsection{Quality of the Report [15 points]}
+
+
+\end{document}
