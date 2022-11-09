@@ -17,7 +17,8 @@ julia> inertial_part(A, coords)
 function inertial_part(A, coords)
     
     """
-    from (https://people.eecs.berkeley.edu/~demmel/cs267/lecture18/lecture18.html)
+    from (https://people.eecs.berkeley.edu/~demmel/cs267/lecture18/lecture18.html) - written as a 
+    comment for my own convenience while solving this exercise.
 
     Inertial Partitioning is very simple as, for a graph with 2D coordinates, it chooses a line such that 
     half the nodes are on one side of the line, and half on the other.
@@ -121,13 +122,4 @@ function inertial_part(A, coords)
     # end
 
     return indicator_vector
-
-    """
-    # RANDOM PARTITIONING - REMOVE AFTER COMPLETION OF THE EXERCISE
-    n = size(A)[1];
-    rng = MersenneTwister(1234);
-    p = bitrand(rng, n);
-    return p
-    """
-
 end

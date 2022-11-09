@@ -30,7 +30,7 @@ function benchmark_metis()
         getData("skirt")
     ];
 
-    #   Loop through meshes
+
    
         
 
