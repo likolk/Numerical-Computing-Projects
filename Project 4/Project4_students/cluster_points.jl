@@ -12,25 +12,28 @@ K = 2;
 
 # 1a) Get coordinate list from point clouds
 
-# pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier = getpoints();
 
 #   Coords used in this demo
 #   TODO: Get the coordinate list from the function getpoints() located in the file /Tools/get_points.jl
-#  define pts_spiral
-pts_spiral, nothing, nothing, nothing, nothing, nothing = getpoints();
-# nothing, pts_clusterin, nothing, nothing, nothing, nothing = getpoints();
-# nothing, nothing, pts_corn, nothing, nothing, nothing = getpoints();
-# nothing, nothing, nothing, pts_halfk, nothing, nothing = getpoints();
-# nothing, nothing, nothing, nothing, pts_moon, nothing = getpoints();
-# nothing, nothing, nothing, nothing, nothing, pts_outlier = getpoints();
+
+# pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier = getpoints();
+
+points, nothing, nothing, nothing, nothing, nothing = getpoints();
+nothing, points, nothing, nothing, nothing, nothing = getpoints();
+nothing, nothing, points, nothing, nothing, nothing = getpoints();
+nothing, nothing, nothing, points, nothing, nothing = getpoints();
+nothing, nothing, nothing, nothing, points, nothing = getpoints();
+nothing, nothing, nothing, nothing, nothing, points = getpoints();
+n = size(points, 1)
+
 
 #   Dummy variable
 # dummy_map = rand(1:K, size(pts_dummy, 1)); changed to:
-dummy_map = rand(1:K, size(pts_spiral, 1));
+dummy_map = rand(1:K, size(points, 1));
 dummy_ϵ = 1;
 #   Create Gaussian similarity function
 # S = similarity(pts_dummy[:, 1:2]); changed to :
-S = similarity(pts_spiral[:, 1:2]);
+S = similarity(points[:, 1:2]);
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 1b) Find the mininal spanning tree of the full graph
@@ -43,14 +46,14 @@ dummy_ϵ = ϵ;
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 1c) Compute the epsilon similarity graph
 # G_e = epsilongraph(dummy_ϵ, pts_dummy); changed to
-G_e = epsilongraph(dummy_ϵ, pts_spiral);
+G_e = epsilongraph(dummy_ϵ, points);
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1d) Create the adjacency matrix for the epsilon case
 W_e = S .* G_e;
 # draw_graph(W_e, pts_dummy) changed to
-draw_graph(W_e, pts_spiral)
+draw_graph(W_e, points)
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,15 +74,17 @@ eigenvectors = eigenvectors[:, sortperm(eigenvalues)];
 eigenvectors = eigenvectors[:, 1:K]; # get the first K = 2 columns of the matrix
 
 
+
 #   K-means method to cluster rows of these eigenvectors 
-clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, maxiter = 1000);
+# clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, maxiter = 1000, display=:iter);
+clustered_eigenvalues, clustered_eigenvectors = kmeans(eigenvectors, K, maxiter = 1000, display=:iter)
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1f) Run K-means on input data
 # R = kmeans(pts_dummy', K); changed to:
 # data_assign = R.assignments; # TODO: What does this line do? 
-eigenvalues_clustering, eigenvectors_clustering = kmeans(pts_spiral, K, n) 
+eigenvalues_clustering, eigenvectors_clustering = kmeans(points, K, n) 
 # spec_assign = R.assignments; # TODO: What does this line do too?
 
 
@@ -90,8 +95,8 @@ eigenvalues_clustering, eigenvectors_clustering = kmeans(pts_spiral, K, n)
 # draw_graph(W_e, pts_dummy, data_assign)
 # draw_graph(W_e, pts_dummy, spec_assign)
 
-draw_graph(W_e, pts_spiral, clustered_eigenvectors)
-draw_graph(W_e, pts_spiral, eigenvectors_clustering)
+draw_graph(W_e, points, clustered_eigenvectors)
+draw_graph(W_e, points, eigenvectors_clustering)
 
 
 # TODO: 1.7
