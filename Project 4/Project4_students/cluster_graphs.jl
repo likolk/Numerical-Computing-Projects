@@ -21,34 +21,52 @@ draw_graph(W, pts)
 dummy_map = rand(1:K, size(pts, 1));
 
 # 2a) Create the Laplacian matrix and plot the graph
-# ----------------------------
-#     Your implementation
-# ----------------------------
+
+#  we can use the file createlaplacian to create the Laplacian matrix.
+L, D = createlaplacian(W); # L is the Laplacian matrix, D is the diagonal matrix
+
 
 #   Eigen-decomposition
-# ----------------------------
-#     Your implementation
 #     (Hint: use eigsvals() and eigvecs())
-# ----------------------------
+
+# use eigsvals() and eigvecs() to get the eigenvalues and eigenvectors
+eigenvalues, eigenvectors = eigsvals(L, nev=K), eigvecs(L);
+
+#   Sort the eigenvalues, should return 2 values 
+a, b = sort(eigenvalues); # the 2 smallest eigenvalues.
+
+# take the 2 smallest eigenvectors.
+# eigenvectors = eigenvectors[:, 1:2];
+eigenvectors = eigenvectors[:, 1:K/2];
+eigenvectors = eigenvectors[:, b];
 
 #   Plot and compare
 draw_graph(W, pts)
 #   TODO: Plot using eigenvector coordinates
+scatter(eigenvectors[:, 1], eigenvectors[:, 2], c=dummy_map, s=10, cmap="tab10")
 
 
 
-# 2b) Cluster each graph in K = 4 clusters with specatral and k-means method, compare your results visually for each case.
+# 2b) Cluster each graph in K = 4 clusters with spectral and 
+# k-means method, compare your results visually for each case.
 
-# ----------------------------
-#     Your implementation
-# ----------------------------
+spectral1, spectral2 = kmeans(eigenvectors[:, 1], K), kmeans(eigenvectors[:, 2], K);
+
+kmeans1, kmeans2 = kmeans(pts[:, 1], K), kmeans(pts[:, 2], K);
+
 
 #   Plot and compare
 #   TODO: Plot the spectral clusters
-draw_graph(W, pts, dummy_map)
+# draw_graph(W, pts, dummy_map)
+draw_graph(W, pts, spectral2)
 #   TODO: Plot the spectral clusters
-draw_graph(W, pts, dummy_map)
+# draw_graph(W, pts, dummy_map)
+draw_graph(W, pts, kmeans2)
 
 # 2c) Calculate the number of nodes per clustering
-histogram(dummy_map, title = "Dummy histogram", legend = false)
-histogram(dummy_map, title = "Dummy histogram", legend = false)
+# histogram(dummy_map, title = "Dummy histogram", legend = false)
+# histogram(dummy_map, title = "Dummy histogram", legend = false)
+histogram(spectral2, title = "Spectral histogram", legend = false)
+histogram(kmeans2, title = "K-means histogram", legend = false)
+
+

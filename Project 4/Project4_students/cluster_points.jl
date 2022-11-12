@@ -16,7 +16,7 @@ K = 2;
 #   Coords used in this demo
 #   TODO: Get the coordinate list from the function getpoints() located in the file /Tools/get_points.jl
 
-# pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier = getpoints();
+# points = pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier.
 
 points, nothing, nothing, nothing, nothing, nothing = getpoints();
 nothing, points, nothing, nothing, nothing, nothing = getpoints();
@@ -76,8 +76,9 @@ eigenvectors = eigenvectors[:, 1:K]; # get the first K = 2 columns of the matrix
 
 
 #   K-means method to cluster rows of these eigenvectors 
+#     (Hint: use kmeans() from the Clustering package)
 # clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, maxiter = 1000, display=:iter);
-clustered_eigenvalues, clustered_eigenvectors = kmeans(eigenvectors, K, maxiter = 1000, display=:iter)
+clustered_eigenvalues, clustered_eigenvectors = kmeans(eigenvectors, K, n)
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -87,7 +88,7 @@ clustered_eigenvalues, clustered_eigenvectors = kmeans(eigenvectors, K, maxiter 
 eigenvalues_clustering, eigenvectors_clustering = kmeans(points, K, n) 
 # spec_assign = R.assignments; # TODO: What does this line do too?
 
-
+        
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
