@@ -27,23 +27,20 @@ L, D = createlaplacian(W); # L is the Laplacian matrix, D is the diagonal matrix
 
 
 #   Eigen-decomposition
-#     (Hint: use eigsvals() and eigvecs())
+#     use eigsvals() and eigvecs())
 
 # use eigsvals() and eigvecs() to get the eigenvalues and eigenvectors
-eigenvalues, eigenvectors = eigsvals(L, nev=K), eigvecs(L);
+eigenvalues, eigenvectors = eigs(L, nev = K, which = :SR);
+eigenvalues1, eigenvalues2 = sort(eigenvalues);
+# we do not sort the eigenvectors
+eigenvectors = eigenvectors[:, eigenvalues2];
 
-#   Sort the eigenvalues, should return 2 values 
-a, b = sort(eigenvalues); # the 2 smallest eigenvalues.
-
-# take the 2 smallest eigenvectors.
-# eigenvectors = eigenvectors[:, 1:2];
-eigenvectors = eigenvectors[:, 1:K/2];
-eigenvectors = eigenvectors[:, b];
 
 #   Plot and compare
-draw_graph(W, pts)
+# draw_graph(W, pts)
 #   TODO: Plot using eigenvector coordinates
-scatter(eigenvectors[:, 1], eigenvectors[:, 2], c=dummy_map, s=10, cmap="tab10")
+draw_graph(W, eigenvectors[:, 2:3])
+
 
 
 
