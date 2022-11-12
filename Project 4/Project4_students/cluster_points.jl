@@ -11,60 +11,68 @@ include("./Tools/add_paths.jl");
 K = 2;
 
 # 1a) Get coordinate list from point clouds
-# ----------------------------
-#     Your implementation
-# ----------------------------
 
 #   Coords used in this demo
 #   TODO: Get the coordinate list from the function getpoints() located in the file /Tools/get_points.jl
-pts_dummy = [rand(100,1)*5 rand(100,1)*5]
-n = size(pts_dummy, 1);
+
+pts_spiral, nothing, nothing, nothing, nothing, nothing = getpoints();
+# nothing, pts_clusterin, nothing, nothing, nothing, nothing = getpoints();
+# nothing, nothing, pts_corn, nothing, nothing, nothing = getpoints();
+# nothing, nothing, nothing, pts_halfk, nothing, nothing = getpoints();
+# nothing, nothing, nothing, nothing, pts_moon, nothing = getpoints();
+# nothing, nothing, nothing, nothing, nothing, pts_outlier = getpoints();
 
 #   Dummy variable
-dummy_map = rand(1:K, size(pts_dummy, 1));
+# dummy_map = rand(1:K, size(pts_dummy, 1)); changed to:
+dummy_map = rand(1:K, size(pts_spiral, 1));
 dummy_ϵ = 1;
 #   Create Gaussian similarity function
-S = similarity(pts_dummy[:, 1:2]);
+# S = similarity(pts_dummy[:, 1:2]); changed to :
+S = similarity(pts_spiral[:, 1:2]);
 
 # 1b) Find the mininal spanning tree of the full graph
-# ----------------------------
-#     Your implementation
-#     (Hint: use the function minspantree() located in the file Tools/min_span_tree.jl)
-# ----------------------------
-
+minimal_spanning_tree = minspantree(S);
 #   Compute epsilon
-# ----------------------------
-#     Your implementation
-# ----------------------------
+ϵ = maximum(minimal_spanning_tree);
+
+dummy_ϵ = ϵ;
+
 
 # 1c) Compute the epsilon similarity graph
-G_e = epsilongraph(dummy_ϵ, pts_dummy);
-# ----------------------------
-#     Your implementation
-# ----------------------------
+# G_e = epsilongraph(dummy_ϵ, pts_dummy); changed to
+G_e = epsilongraph(dummy_ϵ, pts_spiral);
+
 
 # 1d) Create the adjacency matrix for the epsilon case
-# ----------------------------
-#     Your implementation
-# ----------------------------
 W_e = S .* G_e;
-draw_graph(W_e, pts_dummy)
+# draw_graph(W_e, pts_dummy) changed to
+draw_graph(W_e, pts_spiral)
 
-# 1e) Create the Laplacian matrix and implement spectral clustering
+# 1e) Create the Laplacian matrix and implement spectral clustering.
 L, D = createlaplacian(W_e);
-# ----------------------------
-#     Your implementation
-# ----------------------------
 
 #   Spectral method
-# ----------------------------
-#     Your implementation
 #     (Hint: use eigsvals() and eigvecs())
-# ----------------------------
+
+K = 2
+
+eigenvalues, eigenvectors = eigs(L, nev = K, which = :SR);
+eigenvalues = sort(eigenvalues);
+#   Sort eigenvectors according to the eigenvalues. (https://discourse.julialang.org/t/how-to-sort-eigenvectors-from-lowest-to-highest-corresponding-eigenvalue/25586)
+eigenvectors = eigenvectors[:, sortperm(eigenvalues)];
+
+# get the first K = 2 eigenvectors
+eigenvectors = eigenvectors[:, 1:K]; # get the first K = 2 columns of the matrix
+
+# use function kmeans() to cluster 
+# the rows of these eigenvectors.
+
 
 # 1f) Run K-means on input data
-R = kmeans(pts_dummy', K);
+# R = kmeans(pts_dummy', K); changed to:
+R = kmeans(pts_spiral', K);
 data_assign = R.assignments;
+
 
 #   Cluster rows of eigenvector matrix of L corresponding to K smallest eigenvalues. Use kmeans as above.
 R = kmeans(pts_dummy', K);
