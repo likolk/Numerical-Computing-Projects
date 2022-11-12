@@ -12,9 +12,11 @@ K = 2;
 
 # 1a) Get coordinate list from point clouds
 
+# pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier = getpoints();
+
 #   Coords used in this demo
 #   TODO: Get the coordinate list from the function getpoints() located in the file /Tools/get_points.jl
-
+#  define pts_spiral
 pts_spiral, nothing, nothing, nothing, nothing, nothing = getpoints();
 # nothing, pts_clusterin, nothing, nothing, nothing, nothing = getpoints();
 # nothing, nothing, pts_corn, nothing, nothing, nothing = getpoints();
@@ -70,7 +72,7 @@ eigenvectors = eigenvectors[:, 1:K]; # get the first K = 2 columns of the matrix
 
 
 #   K-means method to cluster rows of these eigenvectors 
-clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, n)
+clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, maxiter = 1000);
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -101,21 +103,21 @@ draw_graph(W_e, pts_spiral, eigenvectors_clustering)
 
 
 # for two_spirals:
-two_spiral, nothing, nothing, nothing, nothing, nothing = getpoints();
-two_spiral_map = rand(1:K, size(two_spiral, 1));
-two_spiral_ϵ = 1;
-two_spiral_S = similarity(two_spiral[:, 1:2]);
-two_spiral_minimal_spanning_tree = minspantree(two_spiral_S);
-two_spiral_ϵ = maximum(two_spiral_minimal_spanning_tree);
-two_spiral_G_e = epsilongraph(two_spiral_ϵ, two_spiral);
-two_spiral_W_e = two_spiral_S .* two_spiral_G_e;
-two_spiral_L, two_spiral_D = createlaplacian(two_spiral_W_e);
-two_spiral_eigenvalues, two_spiral_eigenvectors = eigs(two_spiral_L, nev = K, which = :SR);
-two_spiral_eigenvalues = sort(two_spiral_eigenvalues);
-two_spiral_eigenvectors = two_spiral_eigenvectors[:, sortperm(two_spiral_eigenvalues)];
-two_spiral_eigenvectors = two_spiral_eigenvectors[:, 1:K];
-two_spiral_clustered_eigenvalues, two_spiral_clustered_eigenvectors = kmeans(two_spiral, K, n)
-draw_graph(two_spiral_W_e, two_spiral, two_spiral_clustered_eigenvectors)
-draw_graph(two_spiral_W_e, two_spiral, two_spiral_eigenvectors_clustering)
+# two_spiral, nothing, nothing, nothing, nothing, nothing = getpoints();
+# two_spiral_map = rand(1:K, size(two_spiral, 1));
+# two_spiral_ϵ = 1;
+# two_spiral_S = similarity(two_spiral[:, 1:2]);
+# two_spiral_minimal_spanning_tree = minspantree(two_spiral_S);
+# two_spiral_ϵ = maximum(two_spiral_minimal_spanning_tree);
+# two_spiral_G_e = epsilongraph(two_spiral_ϵ, two_spiral);
+# two_spiral_W_e = two_spiral_S .* two_spiral_G_e;
+# two_spiral_L, two_spiral_D = createlaplacian(two_spiral_W_e);
+# two_spiral_eigenvalues, two_spiral_eigenvectors = eigs(two_spiral_L, nev = K, which = :SR);
+# two_spiral_eigenvalues = sort(two_spiral_eigenvalues);
+# two_spiral_eigenvectors = two_spiral_eigenvectors[:, sortperm(two_spiral_eigenvalues)];
+# two_spiral_eigenvectors = two_spiral_eigenvectors[:, 1:K];
+# two_spiral_clustered_eigenvalues, two_spiral_clustered_eigenvectors = kmeans(two_spiral, K, n)
+# draw_graph(two_spiral_W_e, two_spiral, two_spiral_clustered_eigenvectors)
+# draw_graph(two_spiral_W_e, two_spiral, two_spiral_eigenvectors_clustering)
 
 
