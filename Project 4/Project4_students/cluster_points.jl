@@ -18,11 +18,11 @@ K = 2;
 # points = pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier.
 
 points, nothing, nothing, nothing, nothing, nothing = getpoints();
-nothing, points, nothing, nothing, nothing, nothing = getpoints();
-nothing, nothing, points, nothing, nothing, nothing = getpoints();
-nothing, nothing, nothing, points, nothing, nothing = getpoints();
-nothing, nothing, nothing, nothing, points, nothing = getpoints();
-nothing, nothing, nothing, nothing, nothing, points = getpoints();
+# nothing, points, nothing, nothing, nothing, nothing = getpoints();
+# nothing, nothing, points, nothing, nothing, nothing = getpoints();
+# nothing, nothing, nothing, points, nothing, nothing = getpoints();
+# nothing, nothing, nothing, nothing, points, nothing = getpoints();
+# nothing, nothing, nothing, nothing, nothing, points = getpoints();
 n = size(points, 1)
 
 
@@ -55,31 +55,35 @@ draw_graph(W_e, points[:, 1:2])
 L, D = createlaplacian(W_e);
 #   Spectral method
 #     (Hint: use eigsvals() and eigvecs())
-# find the eigenvectors of the Laplacian matrix corresponding to the K = 2 smallest eigenvalues.
-# cc: the eigenvectors corresponding to the K = 2 smallest eigenvalues are the first two columns of the matrix V.
-eigenvalues = eigsvals(L, nev = K, which = :SR)
-eigenvectors = eigvecs(L, nev = K, which = :SR)
+eigenvalues = eigvals(L)
+eigenvectors = eigvecs(L)
 
-#   K-means method to cluster rows of these eigenvectors 
-#     (Hint: use kmeans() from the Clustering package)
+# after finding the eigenvalues and eigenvectors,
+# we need to sort them in ascending order
 
-# sort eigenvalues
 v, e = sort(eigenvalues)
-# the eigenvectors are already sorted in ascending order.
-# take the first two (K) columns
+eigenvectors = eigenvectors[:, sortperm(eigenvalues)]
+
+# take the k smallest eigenvectors 
+# (the first k eigenvectors are the ones with the smallest eigenvalues)
 eigenvectors = eigenvectors[:, 1:K]
-eigenvectors = eigenvectors[:, e]
-# cluster the rows of the eigenvectors
-spectral1, spectral2 = kmeans(eigenvectors, K, n)
+
+# and we will pass them to the function k-means 
+# to find the clusters
+s1, s2 = kmeans(L, K)
+
+
+
+
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1f) Run K-means on input data
-R = kmeans(points, K, n)
+R = kmeans(points, K)
 data_assign = R.assignments
 
 #   Cluster rows of eigenvector matrix of L corresponding to K smallest eigenvalues. Use kmeans as above.
-R = kmeans(eigenvectors, K, n)
+R = kmeans(eigenvectors, K)
 spec_assign = R.assignments
 
 

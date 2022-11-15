@@ -21,28 +21,23 @@ draw_graph(W, pts)
 # dummy_map = rand(1:K, size(pts, 1));
 
 
+n = size(pts, 1)
 # 2a) Create the Laplacian matrix and plot the graph
-
 L, D = createlaplacian(W); # L = Laplacian matrix, D = diagonal matrix
-
 #   Eigen-decomposition
 #     use eigsvals() and eigvecs())
-
 eigenvalues = eigsvals(L, nev = K, which = :SR)
 eigenvectors = eigvecs(L, nev = K, which = :SR)
 v, e = sort(eigenvalues)
 eigenvectors = eigenvectors[:, 2:3]
 #   Plot and compare
-#   TODO: Plot using eigenvector coordinates
-draw_graph(W, eigenvectors[:, 2:3])
+# draw_graph(W, eigenvectors[:, 2:3])
+draw_graph(W, eigenvectors)
 
 
-# 2b) Cluster each graph in K = 4 clusters with spectral and 
-# k-means method, compare your results visually for each case.
-
+# 2b) Cluster each graph in K = 4 clusters with spectral and k-means method, compare your results visually for each case.
 spectral1, spectral2 = kmeans(eigenvectors[:, 1], K), kmeans(eigenvectors[:, 2], K);
-
-kmeans1, kmeans2 = kmeans(pts[:, 1], K), kmeans(pts[:, 2], K);
+kmeans1, kmeans2 = kmeans(pts, K, n)
 
 
 #   Plot and compare
