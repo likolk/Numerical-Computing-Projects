@@ -14,7 +14,6 @@ K = 2;
 
 
 #   Coords used in this demo
-#   TODO: Get the coordinate list from the function getpoints() located in the file /Tools/get_points.jl
 
 # points = pts_spiral, pts_clusterin, pts_corn, pts_halfk, pts_moon, pts_outlier.
 
@@ -27,77 +26,69 @@ nothing, nothing, nothing, nothing, nothing, points = getpoints();
 n = size(points, 1)
 
 
-#   Dummy variable
-# dummy_map = rand(1:K, size(pts_dummy, 1)); changed to:
-dummy_map = rand(1:K, size(points, 1));
-dummy_ϵ = 1;
-#   Create Gaussian similarity function
-# S = similarity(pts_dummy[:, 1:2]); changed to :
 S = similarity(points[:, 1:2]);
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 1b) Find the mininal spanning tree of the full graph
 minimal_spanning_tree = minspantree(S);
-#   Compute epsilon
-ϵ = maximum(minimal_spanning_tree);
+#   Compute epsilon. We will decide epsilon to be the 
+#   value of the weight of the edge of the minimum spanning tree
+#   with the largest weight. 
 
-dummy_ϵ = ϵ;
+epsilon = maximum(minimal_spanning_tree)
 
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # 1c) Compute the epsilon similarity graph
-# G_e = epsilongraph(dummy_ϵ, pts_dummy); changed to
-G_e = epsilongraph(dummy_ϵ, points);
+G_e = epsilongraph(epsilon, points);
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1d) Create the adjacency matrix for the epsilon case
 W_e = S .* G_e;
-# draw_graph(W_e, pts_dummy) changed to
-draw_graph(W_e, points)
+draw_graph(W_e, points[:, 1:2])
+
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 1e) Create the Laplacian matrix and implement spectral clustering.
 L, D = createlaplacian(W_e);
-
 #   Spectral method
 #     (Hint: use eigsvals() and eigvecs())
-
-K = 2
-
-eigenvalues, eigenvectors = eigs(L, nev = K, which = :SR);
-eigenvalues = sort(eigenvalues);
-#   Sort eigenvectors according to the eigenvalues. (https://discourse.julialang.org/t/how-to-sort-eigenvectors-from-lowest-to-highest-corresponding-eigenvalue/25586)
-eigenvectors = eigenvectors[:, sortperm(eigenvalues)];
-
-# get the first K = 2 eigenvectors
-eigenvectors = eigenvectors[:, 1:K]; # get the first K = 2 columns of the matrix
-
-
+# find the eigenvectors of the Laplacian matrix corresponding to the K = 2 smallest eigenvalues.
+# cc: the eigenvectors corresponding to the K = 2 smallest eigenvalues are the first two columns of the matrix V.
+eigenvalues = eigsvals(L, nev = K, which = :SR)
+eigenvectors = eigvecs(L, nev = K, which = :SR)
 
 #   K-means method to cluster rows of these eigenvectors 
 #     (Hint: use kmeans() from the Clustering package)
-# clustered_eigenvalues, clustered_eigenvectors = kmeans(pts_spiral, K, maxiter = 1000, display=:iter);
-clustered_eigenvalues, clustered_eigenvectors = kmeans(eigenvectors, K, n)
+
+# sort eigenvalues
+v, e = sort(eigenvalues)
+# the eigenvectors are already sorted in ascending order.
+# take the first two (K) columns
+eigenvectors = eigenvectors[:, 1:K]
+# cluster the rows of the eigenvectors
+spectral1, spectral2 = kmeans(eigenvectors, K, n)
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1f) Run K-means on input data
-# R = kmeans(pts_dummy', K); changed to:
-# data_assign = R.assignments; # TODO: What does this line do? 
-eigenvalues_clustering, eigenvectors_clustering = kmeans(points, K, n) 
-# spec_assign = R.assignments; # TODO: What does this line do too?
+R = kmeans(points, K, n)
+data_assign = R.assignments
 
-        
+#   Cluster rows of eigenvector matrix of L corresponding to K smallest eigenvalues. Use kmeans as above.
+R = kmeans(eigenvectors, K, n)
+spec_assign = R.assignments
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 1h) Visualize spectral and k-means clustering results
-# draw_graph(W_e, pts_dummy, data_assign)
-# draw_graph(W_e, pts_dummy, spec_assign)
+draw_graph(W_e, points, data_assign)
+draw_graph(W_e, points, spec_assign)
 
-draw_graph(W_e, points, clustered_eigenvectors)
-draw_graph(W_e, points, eigenvectors_clustering)
+
 
 
 # TODO: 1.7
