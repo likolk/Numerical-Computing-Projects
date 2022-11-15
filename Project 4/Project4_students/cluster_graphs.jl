@@ -17,31 +17,24 @@ W, pts = read_mat_graph("./Datasets/Meshes/airfoil1.mat");
 
 draw_graph(W, pts)
 
-# Dummy variable
-dummy_map = rand(1:K, size(pts, 1));
+# # Dummy variable
+# dummy_map = rand(1:K, size(pts, 1));
+
 
 # 2a) Create the Laplacian matrix and plot the graph
 
-#  we can use the file createlaplacian to create the Laplacian matrix.
-L, D = createlaplacian(W); # L is the Laplacian matrix, D is the diagonal matrix
-
+L, D = createlaplacian(W); # L = Laplacian matrix, D = diagonal matrix
 
 #   Eigen-decomposition
 #     use eigsvals() and eigvecs())
 
-# use eigsvals() and eigvecs() to get the eigenvalues and eigenvectors
-eigenvalues, eigenvectors = eigs(L, nev = K, which = :SR);
-eigenvalues1, eigenvalues2 = sort(eigenvalues);
-# we do not sort the eigenvectors
-eigenvectors = eigenvectors[:, eigenvalues2];
-
-
+eigenvalues = eigsvals(L, nev = K, which = :SR)
+eigenvectors = eigvecs(L, nev = K, which = :SR)
+v, e = sort(eigenvalues)
+eigenvectors = eigenvectors[:, 2:3]
 #   Plot and compare
-# draw_graph(W, pts)
 #   TODO: Plot using eigenvector coordinates
 draw_graph(W, eigenvectors[:, 2:3])
-
-
 
 
 # 2b) Cluster each graph in K = 4 clusters with spectral and 

@@ -68,6 +68,7 @@ v, e = sort(eigenvalues)
 # the eigenvectors are already sorted in ascending order.
 # take the first two (K) columns
 eigenvectors = eigenvectors[:, 1:K]
+eigenvectors = eigenvectors[:, e]
 # cluster the rows of the eigenvectors
 spectral1, spectral2 = kmeans(eigenvectors, K, n)
 
