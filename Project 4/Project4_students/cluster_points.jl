@@ -8,6 +8,9 @@ using MAT
 using Plots
 using Distances
 using Random
+using StatsPlots
+using DataFrames
+
 
 include("./Tools/add_paths.jl");
 
@@ -49,7 +52,7 @@ function cluster_points(clustering_algorithm, number_of_clusters)
     # 1c) Compute the epsilon similarity graph
     G_e = epsilongraph(epsilon, clustering_algorithm);
     # draw the graph
-    draw_graph(G_e, clustering_algorithm, "epsilongraph.png")           
+    draw_graph(G_e, clustering_algorithm, "epsilongraph.png")   
 
     # 1d) Create the adjacency matrix 
     W_e = S .* G_e;
@@ -78,8 +81,9 @@ function cluster_points(clustering_algorithm, number_of_clusters)
 
     # visualize 
     draw_graph(W_e, clustering_algorithm, data_assign)
+    readline()
     draw_graph(W_e, clustering_algorithm, spectral_assign)
-
+    readline()
 
 
 end
