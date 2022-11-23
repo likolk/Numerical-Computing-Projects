@@ -12,11 +12,16 @@ function epsilongraph(epsilon, pts)
     # ----------------------------
     #     Your implementation
     # ----------------------------
+    # iterating over the rows and the columns, 
     for i = 1:n
         for j = 1: n
             K = 2
+            # the distance between two vertices is computed in the first place.
             dist = norm(pts[i, 1:K] - pts[j, 1:K])
+             #  Afterwards, the computed distance between those two vertices is compared to the previously-found epsilon value, 
+            #  where epsilon can be a number or a threshold
             if dist < epsilon
+                # and in case it is less than epsilon, a matrix G is defined, where G(i, j) == G(j, i) ==  1.
                 G[i, j] = 1
                 G[j, i] = 1
             end
