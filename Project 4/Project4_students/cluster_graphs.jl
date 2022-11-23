@@ -13,10 +13,10 @@ include("Tools/add_paths.jl");
 # Number of clusters
 K = 4;
 
-print("lol");
+print("test");
 # W, pts = read_mat_graph("./Datasets/Meshes/airfoil1.mat");
 # W, pts = read_mat_graph("./Datasets/Meshes/barth4.mat");
-W, pts = read_mat_graph("./Datasets/Meshes/3elt.mat");
+# W, pts = read_mat_graph("./Datasets/Meshes/3elt.mat");
 print("mat file read");
 
 # draw_graph(W, pts)
@@ -24,8 +24,8 @@ print("mat file read");
 # for the market we can use params as markeralpha, markercolor,
 # markershape, markersize, markerstrokecolor, markerstrokestyle
 
-# function cluster_graphs(W, pts, number_of_clusters)
-    # similar to cluster points, we define a function cluster_graphs which will take W, pts and the number_of_clusters.
+
+# similar to cluster points, we define a function cluster_graphs which will take W, pts and the number_of_clusters.
 
 # allocate memory
 n = size(W)[1]
@@ -42,6 +42,11 @@ eigenvalues_values = eigenvalues.values
 eigenvectors = sortperm(eigenvalues_values)
 eigenvectors_vectors = eigenvalues.vectors[:, eigenvectors]
 desired_eigenvectors = eigenvectors_vectors[:, 2:3]
+
+save("1.png", draw_graph(W, pts));
+save("2.png", draw_graph(W, desired_eigenvectors));
+
+
 
 #   Plot and compare
 # draw_graph(W, desired_eigenvectors)
@@ -105,7 +110,18 @@ spectral_assign = R.assignments
 # edge_width = -10.5)
 
 
+#  for airfoil1
+# save("3.png", draw_graph(W, pts, data_assign));
+# save("4.png", draw_graph(W, pts, spectral_assign));
 
+
+# save("barth4_spectral.png", draw_graph(W, pts, spectral_assign))
+# save("barth4_kmeans.png", draw_graph(W, pts, data_assign))
+
+
+
+save("3elt_spectral.png", draw_graph(W, pts, spectral_assign))
+save("3elt_kmeans.png", draw_graph(W, pts, data_assign))
 
 
 
@@ -152,3 +168,10 @@ spectral_assign = R.assignments
 
 
 
+
+
+# calculate number of nodes per cluster
+for k in 0:K-1
+    println("Number of nodes in cluster ", k, " is ", count(c -> c == k, spectral_assign))
+    println("Number of nodes in cluster ", k, " is ", count(c -> c == k, data_assign))
+end

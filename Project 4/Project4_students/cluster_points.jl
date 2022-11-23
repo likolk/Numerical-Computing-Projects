@@ -27,7 +27,7 @@ K = 2;
 
 # points, nothing, nothing, nothing, nothing, nothing = getpoints();
 # nothing, points, nothing, nothing, nothing, nothing = getpoints();
-nothing, nothing, points, nothing, nothing, nothing = getpoints();
+# nothing, nothing, points, nothing, nothing, nothing = getpoints();
 # nothing, nothing, nothing, points, nothing, nothing = getpoints();
 # nothing, nothing, nothing, nothing, points, nothing = getpoints();
 # nothing, nothing, nothing, nothing, nothing, points = getpoints();
@@ -101,9 +101,12 @@ W_e = S .* G_e;
 # 1e) Create the Laplacian matrix and implement spectral clustering.
 L, D = createlaplacian(W_e);
 #   Spectral method
-#     (Hint: use eigsvals() and eigvecs())
+#     (Hint: use eigsvals() and eigvecs()). 
 # NOTE: My Julia Compiler claims there exists no method eigsvals so im using eigen and getting the values using the .values attributes instead.
 # eigenvals, eigvals also do not work as the TA suggested
+"""
+eigsvals and eigvecs computes the values twice and throws the vector away, which is not optimal.
+"""
 eigenvalues = eigen(L);
 eigenvalues_values = eigenvalues.values
 # the eigenvectors need to be sortperm'ed to match the eigenvalues 
@@ -118,7 +121,7 @@ R = kmeans(points', K);
 data_assign = R.assignments
 
 # save the results
-save("k_means_cluster_5.png", draw_graph(W_e, points, data_assign))
+# save("k_means_cluster_5.png", draw_graph(W_e, points, data_assign))
 
 #   Cluster rows of eigenvector matrix of L corresponding to K smallest eigenvalues. Use kmeans as above.
 #   (Hint: use kmeans())
@@ -130,7 +133,7 @@ R = kmeans(eigenvectors_vectors[:, 1:2]', 2)
 spectral_assign = R.assignments
 
 # save the results 
-save("spectral_cluster_5.png", draw_graph(W_e, points, spectral_assign))
+# save("spectral_cluster_5.png", draw_graph(W_e, points, spectral_assign))
 
 # visualize 
 # draw_graph(W_e, clustering_algorithm, data_assign)
@@ -195,7 +198,7 @@ data_assign = R_1_7_k.assignments
 
 # save the results
 # this is for kmeans corners 
-save("k_means_cluster_1_7.png", draw_graph(W_e, points, data_assign))
+# save("k_means_cluster_1_7.png", draw_graph(W_e, points, data_assign))
 
 #   Cluster rows of eigenvector matrix of L corresponding to K smallest eigenvalues. Use kmeans as above.
 #   (Hint: use kmeans())
@@ -208,7 +211,7 @@ spectral_assign = R_1_7_s.assignments
 
 # save the results 
 # this is for spectral cluster corners 
-save("spectral_cluster__1_7.png", draw_graph(W_e, points, spectral_assign))
+# save("spectral_cluster__1_7.png", draw_graph(W_e, points, spectral_assign))
 
 
 
