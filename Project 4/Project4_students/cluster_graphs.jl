@@ -14,9 +14,10 @@ include("Tools/add_paths.jl");
 K = 4;
 
 print("lol");
-W, pts = read_mat_graph("./Datasets/Meshes/airfoil1.mat");
-# W, pts = read_mat_graph("./Datasets/Meshes/barth4.mat");
+# W, pts = read_mat_graph("./Datasets/Meshes/airfoil1.mat");
+W, pts = read_mat_graph("./Datasets/Meshes/barth4.mat");
 # W, pts = read_mat_graph("./Datasets/Meshes/3elt.mat");
+print("mat file read");
 
 # draw_graph(W, pts)
 
@@ -55,24 +56,33 @@ desired_eigenvectors = eigenvectors_vectors[:, 2:3]
 
 # 2b) Cluster each graph in K = 4 clusters with spectral 
 # and k-means method, compare your results visually for each case.
-R = kmeans(pts', K)
+
+R = kmeans(pts', K) # kmeans expects the data to be in the form of rows and not columns
 data_assign = R.assignments
 # similarly
 
 # marker = (:hexagon, 2, 1.5, :gray)
 # Plots.scatter(pts[:,1], pts[:,2],title = "STH", zcolor = data_assign, marker = marker, legend = false, aspect_ratio = 1)
 
-
-# # TODO:
-# # R = kmeans(desired_eigenvectors', K)
+# # R = kmeans(desired_eigenvectors', K) # NOTE!!, this will not display proper graphs in the 
+# histogram, therefore, we need to get tje forst 4 eigenvectors 
 # # spectral_assign = R.assignments
 
 
-R = kmeans(eigenvectors_vectors[:, 1:4]', 4)
+R = kmeans(eigenvectors_vectors[:, 1:K]', K) # here we are getting the first 4 eigenvectors, which is the same as the first 4 eigenvalues
 spectral_assign = R.assignments
 
+# marker = (:hexagon, 2, 1.5, :gray)
+# Plots.scatter(pts[:,1], pts[:,2],title = "STH", zcolor = spectral_assign, marker = marker, legend = false, aspect_ratio = 1)
+
+
+# marker = (:hexagon, 2, 1.5, :gray)
+# Plots.scatter(pts[:,1], pts[:,2],title = "Spectral Clusters", zcolor = spectral_assign, marker = marker, legend = false, aspect_ratio = 1)
+
+
 marker = (:hexagon, 2, 1.5, :gray)
-Plots.scatter(pts[:,1], pts[:,2],title = "STH", zcolor = spectral_assign, marker = marker, legend = false, aspect_ratio = 1)
+Plots.scatter(pts[:,1], pts[:,2],title = "K-Means Clusters - b", zcolor = spectral_assign, marker = marker, legend = false, aspect_ratio = 1)
+
 
 
 
@@ -82,8 +92,8 @@ Plots.scatter(pts[:,1], pts[:,2],title = "STH", zcolor = spectral_assign, marker
 # draw_graph(W, desired_eigenvectors, spectral_assign)
 # draw_graph(W, pts, spectral_assign)
 # draw_graph(W, desired_eigenvectors, data_assign)
-# histogram(data_assign, title = "data assign histogram", legend = false)
-# histogram(spectral_assign, title = "spectral assign histogram", legend = false)
+# histogram(data_assign, title = "Data-Assign (K-Means) Histogram", legend = false)
+# histogram(spectral_assign, title = "Spectral Assign Histogram", legend = false)
 
 # # # end
 
