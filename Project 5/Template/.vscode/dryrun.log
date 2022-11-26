@@ -1,0 +1,9 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/malik/Documents/NC_Git/NumericalComputing2021-intern/2022/Projects/Project5/Template'
+pdflatex template
+#bibtex template
+pdflatex template
+pdflatex template
+make clean
+make: Leaving directory '/home/malik/Documents/NC_Git/NumericalComputing2021-intern/2022/Projects/Project5/Template'
+ 
