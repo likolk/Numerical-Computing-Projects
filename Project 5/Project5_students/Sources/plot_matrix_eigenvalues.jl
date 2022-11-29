@@ -8,15 +8,10 @@ using Plots
 using DoubleFloats
 
 
-# read file 
-A = read(matopen("./Data/Test/A_test.mat"), "A");
+# load 2 mat files 
+A = matopen("./Data/Test/A_test.mat");
+B = matopen("./Data/Test/b_test.mat");
 
-# we need to convert A to a number before getting the eigenvalues.
-A = double(A)
 
-eigenvalues = eigen(A);
-eigenvalues_values = eigenvalues.values
-# plot eigenvalues
-save("eigenvalues", plot(eigenvalues_values, yscale=:log10, xlabel="Iteration", ylabel="Residual", title="Convergence", legend=:none))
 
-    
+
