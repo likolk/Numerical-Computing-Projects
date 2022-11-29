@@ -20,8 +20,8 @@ A = read(matopen("./Data/Test/A_test.mat"))["A_test"];
 b = read(matopen("./Data/Test/b_test.mat"))["b_test"];
 
 # # print the size of matrix A 
-# println("The size of matrix A in exercise 3 is $(size(A))");
-# println("The size of vector b in exercise 3 is $(size(b))");
+println("The size of matrix A in exercise 3 is $(size(A))");
+println("The size of vector b in exercise 3 is $(size(b))");
 
 # solve the system using myCG function
 #  TODO: Convergence is wrong 
