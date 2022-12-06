@@ -35,33 +35,39 @@ tol = 1e-6;
 x, rvec = myCG(A, b, x0, maxitr, tol);
 
 # plot the convergence
-plot(rvec, yaxis=:log, label="Convergence", xlabel="Iteration", ylabel="Residual", title="Convergence of CG method", legend=:false)
+# plot(rvec, yaxis=:log, label="Convergence", xlabel="Iteration", ylabel="Residual", title="Convergence of CG method", legend=:false)
+
+
+
+
+
+
+
+
+
+
 
 
 
 # plot the eigenvalues of A_test.mat
+plot(eigvals(A), yaxis=:log, label="Eigenvalues", xlabel="Iteration", ylabel="Residual", title="Eigenvalues of A_test.mat", legend=:false)
 
-# we will need to calculate the condition number using cond() 
-# and the eigenvalues using eigvals()
-# we will also need to plot the eigenvalues using plot()
+
+
 
 # calculate the condition number of A_test.mat
 cond_A = cond(A);
 println("The condition number of A_test.mat is $(cond_A)");
-
-# calculate the eigenvalues of A_test.mat
-eige = eigen(A);
-eigenvalues = eige.values;
-# convert to lower triangular 
-eigenvalues = eigenvalues[1:100, 1:100];
-eigenvalues = cond(eigenvalues');
-
-println("The eigenvalues of A_test.mat are $(eigenvalues)");
-
-# plot the eigenvalues of A_test.mat
-# plot(eigvals_A, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues", title="Eigenvalues of A_test.mat", legend=:false)
-
-plot(eigenvalues, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues", title="Eigenvalues of A_test.mat", legend=:false)
+# # calculate the eigenvalues of A_test.mat
+# eige = eigen(A);
+# eigenvalues = eige.values;
+# # convert to lower triangular 
+# eigenvalues = eigenvalues[1:100, 1:100];
+# eigenvalues = cond(eigenvalues');
+# println("The eigenvalues of A_test.mat are $(eigenvalues)");
+# # plot the eigenvalues of A_test.mat
+# # plot(eigvals_A, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues", title="Eigenvalues of A_test.mat", legend=:false)
+# plot(eigenvalues, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues", title="Eigenvalues of A_test.mat", legend=:false)
 
 
 
@@ -69,6 +75,7 @@ plot(eigenvalues, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues",
 
 
 
+# why the residual decreases monotonically
 
 
 
