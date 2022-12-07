@@ -51,26 +51,3 @@ function myCG(A, b, x0, maxitr, tol)
     return x, rvec
 end
     
-    # for i = 0:maxitr
-    #     s = A * d
-    #     alpha = p_old / dot(d, s)
-    #     x = x + alpha * d
-    #     r = r - alpha * s
-    #     p_new = dot(r, r)
-    #     beta = p_new / p_old
-    #     d = r + beta * d
-    #     p_old = p_new
-    #     # norm of the residual at every iteration
-    #     # rvec[i] = norm(r)
-    #     # check whether the norm of r is less than the tolerance 
-    #     if norm(r) < tol 
-    #         break
-    #     end
-    # end
-
-
-
-
-
-    # return x, rvec
-

@@ -27,7 +27,6 @@ println("The size of vector b in exercise 3 is $(size(b))");
 A = A[1:100, 1:100];
 b = b[1:100];
 
-
 # solve the system using myCG function
 x0 = ones(size(A,1));
 maxitr = 200;
@@ -38,27 +37,13 @@ x, rvec = myCG(A, b, x0, maxitr, tol);
 plot(rvec, yaxis=:log, label="Convergence", xlabel="Iteration", ylabel="Residual", title="Convergence of CG method", legend=:false)
 
 
-
-
-
-
-
-
-
-
-
-
-
 # plot the eigenvalues of A_test.mat
 plot(eigvals(A), yaxis=:log, label="Eigenvalues", xlabel="Iteration", ylabel="Residual", title="Eigenvalues of A_test.mat", legend=:false)
-
-
-
 
 # calculate the condition number of A_test.mat
 cond_A = cond(A);
 println("The condition number of A_test.mat is $(cond_A)");
-# # calculate the eigenvalues of A_test.mat
+# # calculate the eigenvalues of A_test.mat (check above)
 # eige = eigen(A);
 # eigenvalues = eige.values;
 # # convert to lower triangular 
