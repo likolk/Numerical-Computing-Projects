@@ -6,6 +6,9 @@ using MAT
 using Plots
 using BandwidthBenchmark
 using BenchmarkTools
+using BandedMatrices
+
+
 
 
 
@@ -17,7 +20,6 @@ b = matread("./Data/Test/b_test.mat");
 
 
 println("The size of matrix A is $(size(A))")
-
 
 
 """
@@ -44,20 +46,17 @@ println("The number of diagonal bands of A is $num_diagonal_bands")
 # we get 753, but we should also add the main diagonal, so the total number of diagonal bands is 754
 # we should do the same though for the other side of the diagonal, so the total number of diagonal bands is 754 + 754 = 1508
 """
-"""
-function calculate_diagonal_bands_version_2(A)
-    n = size(A, 1)
-    count = 0
-    for i in 1:n
-        for j in 1:n
-            if i == j && A[i, j] != 0
-                count += 1
-            end
-        end
-    end
-    return count
-end
-"""
+
+# define the lower and upper diagonal
+lower_diagonal, upper_diagonal = bandwidths(A);
+# print 
+println("The lower diagonal of A is $lower_diagonal")
+println("The upper diagonal of A is $upper_diagonal")
+# total
+total_diagonal = lower_diagonal + upper_diagonal + 1;
+println("The total diagonal of A is $total_diagonal")
+
+
 
 # What is the length of the vectorized blur image b?
 
