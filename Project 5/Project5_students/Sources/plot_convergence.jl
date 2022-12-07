@@ -30,12 +30,12 @@ b = b[1:100];
 
 # solve the system using myCG function
 x0 = ones(size(A,1));
-maxitr = 1000;
-tol = 1e-6;
+maxitr = 200;
+tol = 10^-4;
 x, rvec = myCG(A, b, x0, maxitr, tol);
 
 # plot the convergence
-# plot(rvec, yaxis=:log, label="Convergence", xlabel="Iteration", ylabel="Residual", title="Convergence of CG method", legend=:false)
+plot(rvec, yaxis=:log, label="Convergence", xlabel="Iteration", ylabel="Residual", title="Convergence of CG method", legend=:false)
 
 
 
@@ -70,12 +70,6 @@ println("The condition number of A_test.mat is $(cond_A)");
 # plot(eigenvalues, label="Eigenvalues", xlabel="Iteration", ylabel="Eigenvalues", title="Eigenvalues of A_test.mat", legend=:false)
 
 
-
-
-
-
-
-# why the residual decreases monotonically
 
 
 

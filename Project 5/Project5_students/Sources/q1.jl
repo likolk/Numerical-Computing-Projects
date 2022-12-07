@@ -23,6 +23,8 @@ println("The size of matrix A is $(size(A))")
 
 
 """
+# (first version in the bottom)
+# 2nd version
 # calculate number of diagonal bands of A 
 
 # we will define our own function to calculate the diagonal bands of A 
