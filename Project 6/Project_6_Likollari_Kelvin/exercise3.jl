@@ -36,12 +36,50 @@ among the different compartments, while maximising the profit of the owner of th
 # the constraints are depicted in the following system of equations:
 # 16x1 + 32x2 + 40x3 + 28x4 <= 18
 # 320x1 + 510x2 + 630x3 + 125x4 <= 11930
+
 # 16x1 + 32x2 + 40x3 + 28x4 <= 32
 # 320x1 + 510x2 + 630x3 + 125x4 <= 22552
+
 # 16x1 + 32x2 + 40x3 + 28x4 <= 25
 # 320x1 + 510x2 + 630x3 + 125x4 <= 11209
+
 # 16x1 + 32x2 + 40x3 + 28x4 <= 17
 # 320x1 + 510x2 + 630x3 + 125x4 <= 5870
+
 # 0.1x2 + 0.2x3 + 0.3x4 <= 1
 # x1, x2, x3, x4 >= 0
+
+
+
+# Create a script which uses the simplex method implemented in the previous exercise to solve the problem. 
+# What is the optimal solution? Visualise it graphically and briefly comment the results obtained (are you surprised of this outcome on the basis of your data?).
+
+using JuMP, Clp
+
+m = Model(with_optimizer(Clp.Optimizer))
+
+@variable(m, x1 >= 0)
+@variable(m, x2 >= 0)
+@variable(m, x3 >= 0)
+@variable(m, x4 >= 0)
+
+@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 18)
+@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 11930)
+@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 32)
+@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 22552)
+@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 25)
+@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 11209)
+@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 17)
+@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 5870)
+@constraint(m, 0.1x2 + 0.2x3 + 0.3x4 <= 1)
+
+@objective(m, Max, 135x1 + 200x2 + 410x3 + 520x4)
+
+optimize!(m)
+
+println("Optimal solution: ", objective_value(m))
+println("x1 = ", value(x1))
+println("x2 = ", value(x2))
+println("x3 = ", value(x3))
+println("x4 = ", value(x4))
 
