@@ -1,13 +1,5 @@
 using LinearAlgebra
-using Printf
-using Statistics
 using Plots
-using Random
-using Test
-using JuMP
-using GLPK
-using Arpack
-using SparseArrays
 
 """
 A tailor plans to sell two types of trousers, with production costs of 25 CHF and 40 CHF, respectively. 
@@ -42,11 +34,6 @@ sales = [85, 110]
 demand = 265
 budget = 7000
 
-# plot the feasible region identified by the system of inequalities
-plot("Feasible region", xlabel = "x1", ylabel = "x2", legend = false)
-
-
-
 x = [0, 0]
 profit = 0
 maximum_profit = 0
@@ -80,24 +67,43 @@ sale2 = 110
 demand = 265
 budget = 7000
 
-x1 = 0
-x2 = 0
-profit = 0
-maximum_profit = 0
-maximum_profit_x = [0, 0]
+# goal = max profit
+
+initial_profit = 0
 
 for i = 1:265
-    x1 = i
-    x2 = 265 - i
-    profit = sale1 * x1 + sale2 * x2 - cost1 * x1 - cost2 * x2
-    if profit > maximum_profit
-        maximum_profit = profit
-        maximum_profit_x = [x1, x2]
+    profit = sale1 * i + sale2 * (demand - i) - cost1 * i - cost2 * (demand - i)
+    if profit > initial_profit
+        initial_profit = profit
     end
 end
 
-println("The maximum profit is: ", maximum_profit)
+println("The maximum profit is: ", initial_profit)
+
+
+# plot 25x1 + 40x2 <= 7000
+# we want to plot the AREA where the constraint is satisfied.
+# to print the area, we need to plot the constraint as a function of x1
+# and then plot the function from 0 to 20
+
+plot(x -> (7000 - 25x)/40, 0, 20, label = "25x1 + 40x2 ≤ 7000", legend = :topright, xlabel = "x1", ylabel = "x2")
+
+# plot also x1 + x2 <= 265
+plot!(x -> (265 - x), 0, 20, label = "x1 + x2 ≤ 265")
+
+# plot also x1 >= 0
+plot!(x -> 0, 0, 20, label = "x1 ≥ 0")
+
+# plot also x2 >= 0
+plot!(x -> 0, 0, 20, label = "x2 ≥ 0")
 
 
 
 
+
+# Find the optimal solution and the value of the objective function in that point.
+
+
+
+# to calculate the value of the objective function, we need to find the optimal solution
+# since the optimal solution is : 18540, we can say that the value of the objective function is 18540

@@ -1,3 +1,9 @@
+# include("simplexSolve.jl")
+include("simplex.jl")
+include("standardize.jl")
+# include("auxiliary.jl")
+# include("printSol.jl")
+# include("testSimplex.jl")
 
 """
 In this second part of the assignment, you are required to use the simplex method implementation to solve a 
@@ -27,7 +33,7 @@ is increased by 10% if it is put in S2, by 20% if it is put in S3 and by 30% if 
 The objective of this problem is to determine which amount of the different cargos will be transported and how to allocate it 
 among the different compartments, while maximising the profit of the owner of the cargo plane. Specifically you have to:
 
-"""
+
 
 # Formulate the problem above as a linear program: what is the objective function?
 # What are the constraints? Write down all equations, with comments explaining what you are doing.
@@ -51,35 +57,38 @@ among the different compartments, while maximising the profit of the owner of th
 
 
 
-# Create a script which uses the simplex method implemented in the previous exercise to solve the problem. 
-# What is the optimal solution? Visualise it graphically and briefly comment the results obtained (are you surprised of this outcome on the basis of your data?).
+"""
+# solve the above problem. 
+compartments = ["S1", "S2", "S3", "S4"]
+cargos = ["C1", "C2", "C3", "C4"]
+compartment_weight_capacity = [18, 32, 25, 17]
+compartment_storage_capacity = [11930, 22552, 11209, 5870]
+cargo_weight = [16, 32, 40, 28]
+cargo_volume = [320, 510, 630, 125]
+cargo_profit = [135, 200, 410, 520]
+cargo_profit_increase = [0, 0.1, 0.2, 0.3]
+maximum_profit = 0
+maximum_profit_allocation = []
 
-using JuMP, Clp
 
-m = Model(with_optimizer(Clp.Optimizer))
+type = "max"
+A = [16 32 40 28; 320 510 630 125; 16 32 40 28; 320 510 630 125; 16 32 40 28; 320 510 630 125; 16 32 40 28; 320 510 630 125; 0 0.1 0.2 0.3; 0 0 0 0]
+b = [18; 11930; 32; 22552; 25; 11209; 17; 5870; 1; 0]
+c = [135; 200; 410; 520]
+sign = [0; 0; 0; 0; 0; 0; 0; 0; 0; 1]
+x = simplex(type, A, b, c, sign)
 
-@variable(m, x1 >= 0)
-@variable(m, x2 >= 0)
-@variable(m, x3 >= 0)
-@variable(m, x4 >= 0)
 
-@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 18)
-@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 11930)
-@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 32)
-@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 22552)
-@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 25)
-@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 11209)
-@constraint(m, 16x1 + 32x2 + 40x3 + 28x4 <= 17)
-@constraint(m, 320x1 + 510x2 + 630x3 + 125x4 <= 5870)
-@constraint(m, 0.1x2 + 0.2x3 + 0.3x4 <= 1)
+for i = 1:4
+    for j = 1:4
+        maximum_profit += x[i] * cargo_profit[j] * (1 + cargo_profit_increase[i])
+    end
+end
 
-@objective(m, Max, 135x1 + 200x2 + 410x3 + 520x4)
 
-optimize!(m)
+for i = 1:4
+    maximum_profit_allocation = [maximum_profit_allocation; x[i]]
+end
 
-println("Optimal solution: ", objective_value(m))
-println("x1 = ", value(x1))
-println("x2 = ", value(x2))
-println("x3 = ", value(x3))
-println("x4 = ", value(x4))
-
+println("The maximum profit is: ", maximum_profit)
+println("The allocation of the cargos is: ", maximum_profit_allocation)
