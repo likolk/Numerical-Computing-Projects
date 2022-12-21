@@ -1,18 +1,5 @@
 using LinearAlgebra
-"""
-In this first part of the assignment, you are required to complete 2 functions which are part of a dummy implementation of the simplex method. 
-Specifically you have to complete the TODOs in:
 
-• standardize.jl, which writes a maximisation or minimisation input problem in standard form;
-• simplexSolve.jl, which solves a maximisation or minimisation problem using the simplex method.
-
-You are given also some already-implemented functions to help you in your task: 
-simplex.jl is a wrapper which calls all the functions necessary to find a solution to the linear program; 
-auxiliary.jl solves the auxiliary problem to find a feasible starting basic solution of the linear program; 
-printSol.jl is a function which prints the optimal solution found by the simplex algorithm. 
-Finally, testSimplex.jl presents a series of 6 problems to check if your implementation is correct, before moving to the next part of the assignment. 
-Additional details to aid you in your implementation can be found in the comments inside the code.
-"""
 function standardize(type, A, h, c, m, sign)
     # return arguments are:
     # (1) A_aug = augmented matrix A, containing also the surplus & slack variables

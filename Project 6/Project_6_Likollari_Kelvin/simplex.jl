@@ -1,17 +1,7 @@
-"""
-In this first part of the assignment, you are required to complete 2 functions which are part of a dummy implementation of the simplex method. 
-Specifically you have to complete the TODOs in:
-
-• standardize.jl, which writes a maximisation or minimisation input problem in standard form;
-• simplexSolve.jl, which solves a maximisation or minimisation problem using the simplex method.
-
-You are given also some already-implemented functions to help you in your task: 
-simplex.jl is a wrapper which calls all the functions necessary to find a solution to the linear program; 
-auxiliary.jl solves the auxiliary problem to find a feasible starting basic solution of the linear program; 
-printSol.jl is a function which prints the optimal solution found by the simplex algorithm. 
-Finally, testSimplex.jl presents a series of 6 problems to check if your implementation is correct, before moving to the next part of the assignment. 
-Additional details to aid you in your implementation can be found in the comments inside the code.
-"""
+include("simplexSolve.jl")
+include("standardize.jl")
+include("auxiliary.jl")
+include("printSol.jl")
 function simplex(type, A, h, c, sign)
     # Simplex method solver for a linear programming problem
     # Input arguments:
@@ -24,6 +14,7 @@ function simplex(type, A, h, c, sign)
 
     m = size(A, 1)
     n = size(A, 2)
+    A = A'
 
     # TODO: Compute the maximum number of basic solutions of the original problem [i.e., the maximum number of iterations necessary to solve the problem]
     itMax = m * n
@@ -45,12 +36,12 @@ function simplex(type, A, h, c, sign)
         z = -z
     end
 
-    # moreover, we need to add the value of the artificial variables
-    for i = 1:n
-        if index_B[i] > m
-            z += c_aug[index_B[i]]
-        end
-    end
+    # # moreover, we need to add the value of the artificial variables
+    # for i = 1:n
+    #     if index_B[i] > m
+    #         z += c_aug[index_B[i]]
+    #     end
+    # end
     # Output of the solution
     x_B, index_B = printSol(z, x_B, index_B, m, n)
 
